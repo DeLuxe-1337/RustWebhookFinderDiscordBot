@@ -43,6 +43,8 @@ impl EventHandler for Handler {
 async fn main() {
     rocket::ignite().mount("/", routes![index]).launch();
 
+    println!("Routed network");
+
     let framework = StandardFramework::new()
         .configure(|c| c.prefix(">"))
         .group(&GENERAL_GROUP);
