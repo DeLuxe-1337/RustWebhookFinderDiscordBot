@@ -9,6 +9,23 @@ fn index() -> &'static str {
   "Web panel coming soon"
 }
 
+#[get("/wake")]
+fn wakebot() -> &'static str {
+    let framework = StandardFramework::new()
+    .configure(|c| c.prefix(">"))
+    .group(&GENERAL_GROUP);
+
+    let token = env::var("DISCORD_TOKEN").expect("token");
+    let mut client = Client::builder(token)
+        .event_handler(Handler)
+        .framework(framework)
+        .await
+        .expect("Error creating client");
+
+    client.start().await;
+  return "Turning on"
+}
+
 use serenity::async_trait;
 use serenity::client::{Client, Context, EventHandler};
 use serenity::framework::standard::{
@@ -41,19 +58,6 @@ impl EventHandler for Handler {
 
 #[tokio::main]
 async fn main() {
-    let framework = StandardFramework::new()
-        .configure(|c| c.prefix(">"))
-        .group(&GENERAL_GROUP);
-
-    let token = env::var("DISCORD_TOKEN").expect("token");
-    let mut client = Client::builder(token)
-        .event_handler(Handler)
-        .framework(framework)
-        .await
-        .expect("Error creating client");
-
-    client.start();
-    
     println!("Routing network");
 
     rocket::ignite().mount("/", routes![index]).launch();
