@@ -1,11 +1,11 @@
-use rust_strings::{FileConfig, BytesConfig, strings, dump_strings, Encoding};
+use rust_strings::{dump_strings, strings, BytesConfig, Encoding, FileConfig};
 use std::path::PathBuf;
 
 pub fn get_strings(encode: Encoding, file: String) -> Vec<String> {
     let mut final_strs: Vec<String> = Vec::new();
     let mut config = FileConfig::new(file.as_str())
-    .with_min_length(5)
-    .with_encoding(encode);
+        .with_min_length(5)
+        .with_encoding(encode);
 
     let strs = strings(&config).unwrap();
 
@@ -30,31 +30,37 @@ pub fn get_webhook_strings(file: String, encode: Encoding) -> Vec<String> {
 }
 
 pub fn get_discord_message(file: String) -> String {
-        let mut result = String::new();
-        result.push_str("```\nFormat: ASCII\n");
+    let mut result = String::new();
+    result.push_str("```\nFormat: ASCII\n");
 
-        get_webhook_strings(file.clone(), Encoding::ASCII).iter().for_each(|s| {
+    get_webhook_strings(file.clone(), Encoding::ASCII)
+        .iter()
+        .for_each(|s| {
             result.push_str(s);
             result.push_str("\n");
         });
 
-        result.push_str("Format: UTF16LE\n");
+    result.push_str("Format: UTF16LE\n");
 
-        get_webhook_strings(file.clone(), Encoding::UTF16LE).iter().for_each(|s| {
+    get_webhook_strings(file.clone(), Encoding::UTF16LE)
+        .iter()
+        .for_each(|s| {
             result.push_str(s);
             result.push_str("\n");
         });
 
-        result.push_str("Format: UTF16BE\n");
+    result.push_str("Format: UTF16BE\n");
 
-        get_webhook_strings(file.clone(), Encoding::UTF16BE).iter().for_each(|s| {
+    get_webhook_strings(file.clone(), Encoding::UTF16BE)
+        .iter()
+        .for_each(|s| {
             result.push_str(s);
             result.push_str("\n");
         });
 
-        result.push_str("```");
+    result.push_str("```");
 
-        std::fs::remove_file(file).expect("failed to remove file");
+    std::fs::remove_file(file).expect("failed to remove file");
 
-        result
+    result
 }

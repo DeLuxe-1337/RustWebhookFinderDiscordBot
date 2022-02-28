@@ -12,13 +12,13 @@ pub use serenity::model::gateway::Ready;
 #[commands(scan, help, setact)]
 pub struct General;
 
-use std::io;
 use std::fs::File;
+use std::io;
 use std::io::Write;
 
 use super::webhook_detect::get_discord_message;
-use rust_strings::{Encoding};
 use reqwest::*;
+use rust_strings::Encoding;
 use std::io::copy;
 
 #[command]
@@ -60,10 +60,8 @@ async fn help(ctx: &Context, msg: &Message) -> CommandResult {
 
 #[command]
 async fn string_dump(ctx: &Context, msg: &Message) -> CommandResult {
-
-
     Ok(())
- }
+}
 
 #[command]
 async fn scan(ctx: &Context, msg: &Message) -> CommandResult {
