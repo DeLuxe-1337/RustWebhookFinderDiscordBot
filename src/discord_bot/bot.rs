@@ -19,7 +19,7 @@ impl EventHandler for Handler {
 
 pub async fn start() {
     println!("Launching bot");
-    
+
     let framework = StandardFramework::new()
         .configure(|c| c.prefix(">"))
         .group(&GENERAL_GROUP);

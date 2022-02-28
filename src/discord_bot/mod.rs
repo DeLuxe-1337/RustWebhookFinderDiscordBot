@@ -1,2 +1,2 @@
-pub mod commands;
 pub mod bot;
+pub mod commands;
