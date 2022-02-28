@@ -35,6 +35,7 @@ async fn help(ctx: &Context, msg: &Message) -> CommandResult {
                             "[file or file url] scans the file for webhooks",
                             false,
                         ),
+                        ("_ _", "_ _", false),
                         (
                             ":warning: whitelisted commands :warning:",
                             "You must be whitelisted to use the following commands",
@@ -47,6 +48,7 @@ async fn help(ctx: &Context, msg: &Message) -> CommandResult {
                         ),
                     ])
                     .footer(|f| f.text("The prefix is >"))
+                    .colour(0x4632a8)
             })
         })
         .await;

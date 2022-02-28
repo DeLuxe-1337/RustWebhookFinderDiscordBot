@@ -22,7 +22,12 @@ pub fn get_webhook_strings(file: String, encode: Encoding) -> Vec<String> {
 
     for i in extracted {
         if i.contains("https://") {
-            result.push(i);
+            if i.contains("https://discord.com") {
+                result.push(format!("- {}", i));
+            }
+            else {
+                result.push(format!("+ {}", i));
+            }
         }
     }
 
@@ -31,7 +36,7 @@ pub fn get_webhook_strings(file: String, encode: Encoding) -> Vec<String> {
 
 pub fn get_discord_message(file: String) -> String {
     let mut result = String::new();
-    result.push_str("```\nFormat: ASCII\n");
+    result.push_str("```diff\nFormat: ASCII\n");
 
     get_webhook_strings(file.clone(), Encoding::ASCII)
         .iter()
