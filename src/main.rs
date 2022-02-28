@@ -41,10 +41,6 @@ impl EventHandler for Handler {
 
 #[tokio::main]
 async fn main() {
-    rocket::ignite().mount("/", routes![index]).launch();
-
-    println!("Routed network");
-
     let framework = StandardFramework::new()
         .configure(|c| c.prefix(">"))
         .group(&GENERAL_GROUP);
@@ -56,9 +52,11 @@ async fn main() {
         .await
         .expect("Error creating client");
 
-    if let Err(why) = client.start().await {
-        println!("An error occurred while running the client: {:?}", why);
-    }
+    client.start();
+    
+    println!("Routing network");
+
+    rocket::ignite().mount("/", routes![index]).launch();
 }
 
 #[command]
