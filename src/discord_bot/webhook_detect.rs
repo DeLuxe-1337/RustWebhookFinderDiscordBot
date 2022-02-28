@@ -1,9 +1,8 @@
-use rust_strings::{dump_strings, strings, BytesConfig, Encoding, FileConfig};
-use std::path::PathBuf;
+use rust_strings::{strings, Encoding, FileConfig};
 
 pub fn get_strings(encode: Encoding, file: String) -> Vec<String> {
     let mut final_strs: Vec<String> = Vec::new();
-    let mut config = FileConfig::new(file.as_str())
+    let config = FileConfig::new(file.as_str())
         .with_min_length(5)
         .with_encoding(encode);
 

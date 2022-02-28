@@ -17,9 +17,6 @@ use std::io;
 use std::io::Write;
 
 use super::webhook_detect::get_discord_message;
-use reqwest::*;
-use rust_strings::Encoding;
-use std::io::copy;
 
 #[command]
 async fn help(ctx: &Context, msg: &Message) -> CommandResult {
@@ -60,10 +57,10 @@ async fn help(ctx: &Context, msg: &Message) -> CommandResult {
     Ok(())
 }
 
-#[command]
+/*#[command]
 async fn string_dump(ctx: &Context, msg: &Message) -> CommandResult {
     Ok(())
-}
+}*/
 
 #[command]
 async fn scan(ctx: &Context, msg: &Message) -> CommandResult {
@@ -73,7 +70,7 @@ async fn scan(ctx: &Context, msg: &Message) -> CommandResult {
 
     if let Some(url) = args.next() {
         if url.contains("http") {
-            let mut resp = reqwest::get(url).await?;
+            let resp = reqwest::get(url).await?;
             let mut out = File::create("result.exe").expect("failed to create file");
             io::copy(&mut resp.text().await?.as_bytes(), &mut out).expect("failed to copy content");
 
