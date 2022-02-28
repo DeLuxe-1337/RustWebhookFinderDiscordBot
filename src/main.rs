@@ -21,7 +21,9 @@ async fn start() {
         .await
         .expect("Error creating client");
 
-    client.start().await;
+    if let Err(why) = client.start().await {
+        println!("Client error: {:?}", why);
+    }
 }
 
 #[get("/wake")]
@@ -39,6 +41,7 @@ use serenity::model::channel::Message;
 use serenity::model::gateway::Activity;
 use serenity::model::gateway::Ready;
 use std::env;
+use std::thread;
 
 #[group]
 #[commands(webhookv2, help, setact)]
@@ -63,9 +66,11 @@ impl EventHandler for Handler {
 async fn main() {
     env::set_var("ROCKET_PORT", env::var("PORT").expect("port"));
 
-    println!("Routing network");
+    thread::spawn(|| {
+        println!("Routing network");
 
-    rocket::ignite().mount("/", routes![index, wakebot]).launch();
+        rocket::ignite().mount("/", routes![index, wakebot]).launch();
+    });
 
     println!("Launching bot");
     
