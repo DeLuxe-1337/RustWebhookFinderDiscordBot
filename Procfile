@@ -1,1 +1,1 @@
-web: ./target/debug/DiscordBot
+web: ./target/debug/DiscordBot.exe
