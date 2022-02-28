@@ -19,10 +19,9 @@ fn wakebot() -> &'static str {
     let mut client = Client::builder(token)
         .event_handler(Handler)
         .framework(framework)
-        .await
         .expect("Error creating client");
 
-    client.start().await;
+    client.start();
   return "Turning on"
 }
 
