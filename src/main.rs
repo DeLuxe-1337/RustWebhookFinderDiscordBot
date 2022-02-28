@@ -1,3 +1,14 @@
+//For when I decide to make a web panel
+
+#![feature(proc_macro_hygiene, decl_macro)]
+
+#[macro_use] extern crate rocket;
+
+#[get("/")]
+fn index() -> &'static str {
+  "Web panel coming soon"
+}
+
 use serenity::async_trait;
 use serenity::client::{Client, Context, EventHandler};
 use serenity::framework::standard::{
@@ -30,6 +41,8 @@ impl EventHandler for Handler {
 
 #[tokio::main]
 async fn main() {
+    rocket::ignite().mount("/", routes![index]).launch();
+
     let framework = StandardFramework::new()
         .configure(|c| c.prefix(">"))
         .group(&GENERAL_GROUP);
