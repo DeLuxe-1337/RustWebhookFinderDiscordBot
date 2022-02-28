@@ -23,8 +23,7 @@ pub fn get_webhook_strings(file: String, encode: Encoding) -> Vec<String> {
         if i.contains("https://") {
             if i.contains("https://discord.com") {
                 result.push(format!("- {}", i));
-            }
-            else {
+            } else {
                 result.push(format!("+ {}", i));
             }
         }
