@@ -87,4 +87,3 @@ async fn setact(ctx: &Context, msg: &Message) -> CommandResult {
 
     Ok(())
 }
-
