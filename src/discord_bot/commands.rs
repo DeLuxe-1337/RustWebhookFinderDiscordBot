@@ -8,6 +8,10 @@ pub use serenity::model::channel::Message;
 pub use serenity::model::gateway::Activity;
 pub use serenity::model::gateway::Ready;
 
+#[group]
+#[commands(webhookv2, help, setact)]
+pub struct General;
+
 #[command]
 async fn help(ctx: &Context, msg: &Message) -> CommandResult {
     let msg = msg
@@ -69,8 +73,12 @@ async fn setact(ctx: &Context, msg: &Message) -> CommandResult {
     if is_whitelisted(msg.author.id.0).await {
         let mut args = msg.content.splitn(2, ' ');
 
-        if let (Some(">setact"), Some(game)) = (args.next(), args.next()) {
-            ctx.set_activity(Activity::playing(game)).await;
+        args.next();
+
+        if let Some(activity) = args.next() {
+            ctx.set_activity(Activity::playing(activity)).await;
+
+            msg.reply(ctx, "Activity set!").await?;
         }
     } else {
         msg.reply(ctx, "You are not whitelisted to use this command!")

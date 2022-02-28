@@ -2,10 +2,6 @@ use std::env;
 
 use super::commands::*;
 
-#[group]
-#[commands(webhookv2, help, setact)]
-struct General;
-
 struct Handler;
 
 #[async_trait]
