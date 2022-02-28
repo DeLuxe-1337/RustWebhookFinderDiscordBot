@@ -67,7 +67,7 @@ async fn main() {
 
     println!("Routing network");
 
-    rocket::ignite().mount("/", routes![index]).launch();
+    rocket::ignite().mount("/", routes![index, wakebot]).launch();
 }
 
 #[command]
