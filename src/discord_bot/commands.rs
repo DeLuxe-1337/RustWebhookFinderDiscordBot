@@ -59,6 +59,13 @@ async fn help(ctx: &Context, msg: &Message) -> CommandResult {
 }
 
 #[command]
+async fn string_dump(ctx: &Context, msg: &Message) -> CommandResult {
+
+
+    Ok(())
+ }
+
+#[command]
 async fn scan(ctx: &Context, msg: &Message) -> CommandResult {
     let mut args = msg.content.split_whitespace();
 

@@ -54,5 +54,7 @@ pub fn get_discord_message(file: String) -> String {
 
         result.push_str("```");
 
+        std::fs::remove_file(file).expect("failed to remove file");
+
         result
 }
