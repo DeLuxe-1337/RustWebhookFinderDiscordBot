@@ -63,6 +63,8 @@ impl EventHandler for Handler {
 
 #[tokio::main]
 async fn main() {
+    env::set_var("ROCKET_PORT", env::var("PORT").expect("port"));
+
     println!("Routing network");
 
     rocket::ignite().mount("/", routes![index]).launch();
