@@ -9,8 +9,7 @@ fn index() -> &'static str {
   "Web panel coming soon"
 }
 
-#[get("/wake")]
-fn wakebot() -> &'static str {
+async fn start() {
     let framework = StandardFramework::new()
     .configure(|c| c.prefix(">"))
     .group(&GENERAL_GROUP);
@@ -19,10 +18,17 @@ fn wakebot() -> &'static str {
     let mut client = Client::builder(token)
         .event_handler(Handler)
         .framework(framework)
+        .await
         .expect("Error creating client");
 
     client.start();
-  return "Turning on"
+}
+
+#[get("/wake")]
+fn wakebot() -> &'static str {
+    
+    start();
+    "Turning on"
 }
 
 use serenity::async_trait;
