@@ -9,8 +9,17 @@ pub use serenity::model::gateway::Activity;
 pub use serenity::model::gateway::Ready;
 
 #[group]
-#[commands(webhookv2, help, setact)]
+#[commands(scan, help, setact)]
 pub struct General;
+
+use std::io;
+use std::fs::File;
+use std::io::Write;
+
+use super::webhook_detect::get_discord_message;
+use rust_strings::{Encoding};
+use reqwest::*;
+use std::io::copy;
 
 #[command]
 async fn help(ctx: &Context, msg: &Message) -> CommandResult {
@@ -22,7 +31,7 @@ async fn help(ctx: &Context, msg: &Message) -> CommandResult {
                     .fields(vec![
                         ("help", "Returns a list of commands", false),
                         (
-                            "webhookv2",
+                            "scan",
                             "[file or file url] scans the file for webhooks",
                             false,
                         ),
@@ -50,8 +59,40 @@ async fn help(ctx: &Context, msg: &Message) -> CommandResult {
 }
 
 #[command]
-async fn webhookv2(ctx: &Context, msg: &Message) -> CommandResult {
-    msg.reply(ctx, "Not implemented yet!").await?;
+async fn scan(ctx: &Context, msg: &Message) -> CommandResult {
+    let mut args = msg.content.split_whitespace();
+
+    args.next();
+
+    if let Some(url) = args.next() {
+        if url.contains("http") {
+            let mut resp = reqwest::get(url).await?;
+            let mut out = File::create("result.exe").expect("failed to create file");
+            io::copy(&mut resp.text().await?.as_bytes(), &mut out).expect("failed to copy content");
+
+            let result = get_discord_message("result.exe".to_string());
+
+            msg.reply(ctx, result).await?;
+        }
+
+        return Ok(());
+    }
+
+    let attach = &msg.attachments[0];
+
+    if !attach.filename.contains(".exe") {
+        msg.reply(ctx, "Not an exe file!").await?;
+        return Ok(());
+    }
+
+    if let Ok(content) = attach.download().await {
+        let mut file = File::create(attach.filename.clone()).unwrap();
+        file.write_all(&content).unwrap();
+
+        let result = get_discord_message(attach.filename.clone());
+
+        msg.reply(ctx, result).await?;
+    }
 
     Ok(())
 }
