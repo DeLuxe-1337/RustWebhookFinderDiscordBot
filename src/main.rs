@@ -21,14 +21,12 @@ async fn start() {
         .await
         .expect("Error creating client");
 
-    client.start();
+    client.start().await;
 }
 
 #[get("/wake")]
 fn wakebot() -> &'static str {
-    
-    start();
-    "Turning on"
+    "not implemented"
 }
 
 use serenity::async_trait;
@@ -68,6 +66,10 @@ async fn main() {
     println!("Routing network");
 
     rocket::ignite().mount("/", routes![index, wakebot]).launch();
+
+    println!("Launching bot");
+    
+    start().await;
 }
 
 #[command]
