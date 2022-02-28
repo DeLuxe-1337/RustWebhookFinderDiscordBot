@@ -7,6 +7,7 @@ use serenity::framework::standard::{
 use serenity::model::channel::Message;
 use serenity::model::gateway::Activity;
 use serenity::model::gateway::Ready;
+use std::env;
 
 #[group]
 #[commands(webhookv2, help, setact)]
@@ -33,7 +34,8 @@ async fn main() {
         .configure(|c| c.prefix(">"))
         .group(&GENERAL_GROUP);
 
-    let mut client = Client::builder("OTQ3NjM3MTM1ODg2OTEzNTQ2.YhwJ2w.HZrXtyowYq26IMTja_4VPmsYIzE")
+    let token = env::var("DISCORD_TOKEN").expect("token");
+    let mut client = Client::builder(token)
         .event_handler(Handler)
         .framework(framework)
         .await
