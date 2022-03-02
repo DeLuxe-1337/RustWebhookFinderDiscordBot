@@ -33,35 +33,45 @@ pub fn get_webhook_strings(file: String, encode: Encoding) -> Vec<String> {
 }
 
 pub fn get_discord_message(file: String) -> String {
+    let mut existing: Vec<String> = Vec::new();
     let mut result = String::new();
-    result.push_str("```diff\nFormat: ASCII\n");
+    result.push_str("```diff\nEncoding: ASCII\n");
 
     get_webhook_strings(file.clone(), Encoding::ASCII)
         .iter()
         .for_each(|s| {
-            result.push_str(s);
-            result.push_str("\n");
+            if !existing.contains(s) {
+                result.push_str(s);
+                result.push_str("\n");
+                existing.push(s.clone());
+            }
         });
 
-    result.push_str("Format: UTF16LE\n");
+    result.push_str("Encoding: UTF16LE\n");
 
     get_webhook_strings(file.clone(), Encoding::UTF16LE)
         .iter()
         .for_each(|s| {
-            result.push_str(s);
-            result.push_str("\n");
+            if !existing.contains(s) {
+                result.push_str(s);
+                result.push_str("\n");
+                existing.push(s.clone());
+            }
         });
 
-    result.push_str("Format: UTF16BE\n");
+    result.push_str("Encoding: UTF16BE\n");
 
     get_webhook_strings(file.clone(), Encoding::UTF16BE)
         .iter()
         .for_each(|s| {
-            result.push_str(s);
-            result.push_str("\n");
+            if !existing.contains(s) {
+                result.push_str(s);
+                result.push_str("\n");
+                existing.push(s.clone());
+            }
         });
 
-    result.push_str("```");
+    result.push_str("```\n```\nDisclaimer: Just because it does not return any results doesn't mean it is not malicious.\n```");
 
     std::fs::remove_file(file).expect("failed to remove file");
 
